@@ -1,8 +1,4 @@
-// // Store gameboard in an Array inside of a gameboard OBJECT. Tic tac toe gameboard is 3 by 3 row
-// // Your players will be stored in objects as well
-// // the flow of the game will be controlled by an object as well
-
-const container = document.querySelector("#container")
+const container = document.querySelector("#boardContainer")
 const btnContainer = document.querySelector("#buttonContainer")
 const nameContainer = document.querySelector("#nameContainer")
 const playerOne = document.querySelector("#playerOne")
@@ -10,89 +6,134 @@ const playerTwo = document.querySelector("#playerTwo")
 const startBtn = document.querySelector("#startGame")
 const resetBtn = document.querySelector("#resetGame")
 const rowBox = document.querySelectorAll(".rowBox")
+const results = document.querySelector("#announceResult")
+
+container.style.visibility = "hidden";
 
 
-// const gameBoard = (function () {
-//     const emptyBoard = () => {
-//         let playBoard = ["", "", "", "", "", "", "", "", ""]
-//         return playBoard;
-//     }
-
-//     const filledBoard = () => {
-//         let playBoard = ["X", "X", "X", "X", "X", "X", "X", "X", "O"];
-//         return playBoard;
-//     }
-
-// })();
-
-
-
-// const gameDisplay = (function () {
-//     const startBtn = document.querySelector("#startGame")
-//     const resetBtn = document.querySelector("#resetGame")
-
-// })();
-
-
-
-// const players = (name) => {
-
-// }
-
-
-
-
-
-
-
-
-let playBox = ["", "", "", "", "", "", "", "", ""];
-console.log(rowBox)
-
-function appendBoard() {
-    let xCount = 0;
-    let oCount = 0;
-    for (let j = 0; j < playBox.length; j++) {
-        playBox[j] === "X" && xCount++
-    }
-    let xSymbolCount = xCount;
-
-    for (let j = 0; j < playBox.length; j++) {
-        playBox[j] === "O" && oCount++
-    }
-    let oSymbolCount = oCount;
-
-
-    for (let i = 0; i < rowBox.length; i++) {
-        rowBox[i].addEventListener("click", (e) => {
-            if (xSymbolCount == 0 || xSymbolCount <= oSymbolCount) {
-                e.target.textContent = "X";
-                e.target.value = e.target.textContent;
-                xSymbolCount++;
-                playBox[i] = rowBox[i].value;
-                console.log(playBox)
-                console.log(xSymbolCount, "X count")
-                console.log(oSymbolCount, "O count")
-
-            } else if (xSymbolCount > 0 && oSymbolCount == 0 || oSymbolCount < xSymbolCount) {
-                e.target.textContent = "O";
-                e.target.value = e.target.textContent;
-                oSymbolCount++;
-                playBox[i] = rowBox[i].value;
-                console.log(playBox)
-                console.log(xSymbolCount, "X count")
-                console.log(oSymbolCount, "O count")
-            }
-
-        })
+const players = (name, symbol) => {
+    return {
+        name,
+        symbol
     }
 
 
 }
 
-appendBoard();
+
+
+const gameBoard = (function () {
+
+    let xCount = 0;
+    let oCount = 0;
+
+    const player1 = players(playerOne.value, "X");
+    const player2 = players(playerTwo.value, "O");
+
+    function appendBoard() {
 
 
 
+        for (let i = 0; i < rowBox.length; i++) {
+
+            rowBox[i].addEventListener("click", (e) => {
+                if (xCount == 0 || xCount <= oCount || e.target.value == "X") {
+                    e.target.textContent = player1.symbol;
+                    e.target.value = e.target.textContent;
+                    xCount++;
+
+                } else if (xCount > 0 && oCount == 0 || oCount < xCount || e.target.value == "O") {
+                    e.target.textContent = player2.symbol;
+                    e.target.value = e.target.textContent;
+                    oCount++;
+
+                }
+                winConditions();
+            })
+
+        }
 
 
+    }
+
+    function winConditions() {
+        if (rowBox[0].textContent == "X" && rowBox[1].textContent == "X" && rowBox[2].textContent == "X" ||
+            rowBox[3].textContent == "X" && rowBox[4].textContent == "X" && rowBox[5].textContent == "X" ||
+            rowBox[6].textContent == "X" && rowBox[7].textContent == "X" && rowBox[8].textContent == "X" ||
+            rowBox[0].textContent == "X" && rowBox[3].textContent == "X" && rowBox[6].textContent == "X" ||
+            rowBox[1].textContent == "X" && rowBox[4].textContent == "X" && rowBox[7].textContent == "X" ||
+            rowBox[2].textContent == "X" && rowBox[5].textContent == "X" && rowBox[8].textContent == "X" ||
+            rowBox[0].textContent == "X" && rowBox[4].textContent == "X" && rowBox[8].textContent == "X" ||
+            rowBox[2].textContent == "X" && rowBox[4].textContent == "X" && rowBox[6].textContent == "X") {
+            results.textContent = `${playerOne.value} wins!`
+            xCount = 0;
+            oCount = 0;
+
+
+
+        } else if (rowBox[0].textContent == "O" && rowBox[1].textContent == "O" && rowBox[2].textContent == "O" ||
+            rowBox[3].textContent == "O" && rowBox[4].textContent == "O" && rowBox[5].textContent == "O" ||
+            rowBox[6].textContent == "O" && rowBox[7].textContent == "O" && rowBox[8].textContent == "O" ||
+            rowBox[0].textContent == "O" && rowBox[3].textContent == "O" && rowBox[6].textContent == "O" ||
+            rowBox[1].textContent == "O" && rowBox[4].textContent == "O" && rowBox[7].textContent == "O" ||
+            rowBox[2].textContent == "O" && rowBox[5].textContent == "O" && rowBox[8].textContent == "O" ||
+            rowBox[0].textContent == "O" && rowBox[4].textContent == "O" && rowBox[8].textContent == "O" ||
+            rowBox[2].textContent == "O" && rowBox[4].textContent == "O" && rowBox[6].textContent == "O") {
+            results.textContent = `${playerTwo.value} wins!`
+            xCount = 0;
+            oCount = 0;
+
+
+        } else if (xCount + oCount == 9) {
+            results.textContent = "It's a tie game! Please press reset"
+            xCount = 0;
+            oCount = 0;
+
+
+        }
+    }
+
+
+    return {
+        appendBoard
+    }
+
+})();
+
+gameBoard.appendBoard();
+
+
+
+const gameControl = (function () {
+    let playBox = ["", "", "", "", "", "", "", "", ""];
+
+    for (let i = 0; i < rowBox.length; i++) {
+        playBox[i] == rowBox[i].value
+    }
+
+
+
+    startBtn.addEventListener("click", () => {
+        if (playerOne.value !== "" && playerTwo.value !== "" && container.style.visibility === "hidden") {
+            container.style.visibility = "visible";
+
+        }
+
+    })
+
+    resetBtn.addEventListener("click", () => {
+        rowBox.forEach((box) => {
+            box.textContent = "";
+            box.value = "";
+            results.textContent = "";
+
+        })
+
+    })
+
+
+    return {
+
+
+    }
+})();

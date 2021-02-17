@@ -5,7 +5,7 @@ body {
 	background-color: rgb(100, 149, 237);
 }
 
-#container {
+#boardContainer {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	grid-gap: 1px;
@@ -15,37 +15,13 @@ body {
 	padding: 10px;
 }
 
-#container > div {
+#boardContainer > div {
 	background-color: rgb(132, 167, 204);
+	font-size: 40px;
 }
 
-#container > div::before {
+#boardContainer > div::before {
 	content: "";
 	padding-bottom: 100%;
 	display: block;
 }
-
-/* body {
-	max-width: 500px;
-	margin: 0 auto;
-	text-align: center;
-}
-
-#container {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-gap: 1px;
-	background-color: black;
-	border-color: black;
-	border-style: solid;
-}
-
-#container > div {
-	background-color: white;
-}
-
-#container > div::before {
-	content: "";
-	padding-bottom: 100%;
-	display: block;
-} */
