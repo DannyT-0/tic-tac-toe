@@ -10,6 +10,7 @@ const results = document.querySelector("#announceResult")
 
 container.style.visibility = "hidden";
 
+alert("Please enter the player names below to start the game!")
 
 const players = (name, symbol) => {
     return {
@@ -30,7 +31,7 @@ const gameBoard = (function () {
     const player1 = players(playerOne.value, "X");
     const player2 = players(playerTwo.value, "O");
 
-    function appendBoard() {
+    function addEvents() {
 
 
 
@@ -82,6 +83,7 @@ const gameBoard = (function () {
             results.textContent = `${playerTwo.value} wins!`
             xCount = 0;
             oCount = 0;
+            
 
 
         } else if (xCount + oCount == 9) {
@@ -95,12 +97,12 @@ const gameBoard = (function () {
 
 
     return {
-        appendBoard
+        addEvents
     }
 
 })();
 
-gameBoard.appendBoard();
+gameBoard.addEvents();
 
 
 
@@ -137,3 +139,7 @@ const gameControl = (function () {
 
     }
 })();
+
+
+
+
